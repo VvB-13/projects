@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HTML Elements</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <link href="HTML_Elements.css" rel="stylesheet"/>
+        <link rel="icon" href="mstile-310x310.png"/>
+        <style>body{font-family:Verdana;}</style>
+    </head>
+    <body>
+        <header>
+            <h1>HTML Elements and Description</h1>
+        </header>
+        <main>
+            <h2>Table of Elements</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="left">Element</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>&lt;!doctype html&gt;</code></td>
+                        <td>At the very Start of each HTML Document.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;html&gt;&lt;/html&gt;</code></td>
+                        <td>Represents the root (top-level element) of an HTML document, so it is also referred to as the root element. All other elements must be descendants of this element.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;head&gt;&lt;/head&gt;</code></td>
+                        <td>Contains machine-readable information (metadata) about the document, like its title, scripts, and style sheets.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;title&gt;&lt;/title&gt;</code></td>
+                        <td>Defines the document's title that is shown in a Browser's title bar or a page's tab.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;meta&gt;</code></td>
+                        <td>Represents Metadata that cannot be represented by other HTML meta-related elements, like "base", "link", "script", "style" or "title".</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;style&gt;&lt;/style&gt;</code></td>
+                        <td>Contains style information for a document, or part of a document. It contains CSS, which is applied to the contents of the document containing the "style" element.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;link&gt;</code></td>
+                        <td>Specifies relationships between the current document and an external resource. This element is most commonly used to link to CSS, but is also used to establish site icons (both "favicon" style icons and icons for the home screen and apps on mobile devices) among other things.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;h1&gt;&lt;/h1&gt;, &lt;h2&gt;&lt;/h2&gt;, &lt;h3&gt;&lt;/h3&gt;, &lt;h4&gt;&lt;/h4&gt;, &lt;h5&gt;&lt;/h5&gt;, &lt;h6&gt;&lt;/h6&gt;</code></td>
+                        <td>The "h1" to "h6" elements represent six levels of section headings. "h1" is the highest section level and "h6" is the lowest.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;main&gt;&lt;/main&gt;</code></td>
+                        <td>Represents the dominant content of the body of a document. The main content area consists of content that is directly related to or expands upon the central topic of a document, or the central functionality of an application.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;section&gt;&lt;/section&gt;</code></td>
+                        <td>Represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. Sections should always have a heading, with very few exceptions.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;p&gt;&lt;/p&gt;</code></td>
+                        <td>Represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;a&gt;&lt;/a&gt;</code></td>
+                        <td>With its "href" attribute, creates a hyperlink to web pages, files, email addresses, locations in the same page, or anything else a URL can address.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;!-- --&gt;</code></td>
+                        <td>Is used to write a comment. It can also be used to deactivate code.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;img&gt;</code></td>
+                        <td>Embeds an image into the document.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;ul&gt;&lt;/ul&gt;</code></td>
+                        <td>Represents an unordered list of items, typically rendered as a bulleted list.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;ol&gt;&lt;/ol&gt;</code></td>
+                        <td>Represents an ordered list of items — typically rendered as a numbered list.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;li&gt;&lt;/li&gt;</code></td>
+                        <td>Is used to represent an item in a list. It must be contained in a parent element: an ordered list (ol), an unordered list (ul), or a menu (menu). In menus and unordered lists, list items are usually displayed using bullet points. In ordered lists, they are usually displayed with an ascending counter on the left, such as a number or letter.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;figure&gt;&lt;/figure&gt;</code></td>
+                        <td>Represents self-contained content, potentially with an optional caption, which is specified using the figcaption element. The figure, its caption, and its contents are referenced as a single unit.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;figcaption&gt;&lt;/figcaption&gt;</code></td>
+                        <td>Represents a caption or legend describing the rest of the contents of its parent figure element.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;em&gt;&lt;/em&gt;</code></td>
+                        <td>Marks text that has stress emphasis. The "em" element can be nested, with each level of nesting indicating a greater degree of emphasis.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;strong&gt;&lt;/strong&gt;</code></td>
+                        <td>Indicates that its contents have strong importance, seriousness, or urgency. Browsers typically render the contents in bold type.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;form&gt;&lt;/form&gt;</code></td>
+                        <td>Represents a document section containing interactive controls for submitting information.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;fieldset&gt;&lt;/fieldset&gt;</code></td>
+                        <td>Is used to group several controls as well as labels (label) within a web form.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;legend&gt;&lt;/legend&gt;</code></td>
+                        <td>Represents a caption for the content of its parent fieldset.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;label&gt;&lt;/label&gt;</code></td>
+                        <td>Represents a caption for an item in a user interface.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;input&gt;</code></td>
+                        <td>Is used to create interactive controls for web-based forms in order to accept data from the user; a wide variety of types of input data and control widgets are available, depending on the device and user agent. The "input" element is one of the most powerful and complex in all of HTML due to the sheer number of combinations of input types and attributes.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;button&gt;&lt;/button&gt;</code></td>
+                        <td>Is an interactive element activated by a user with a mouse, keyboard, finger, voice command, or other assistive technology. Once activated, it then performs a programmable action, such as submitting a form or opening a dialog.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;footer&gt;&lt;/footer&gt;</code></td>
+                        <td>Represents a footer for its nearest ancestor sectioning content or sectioning root element. A "footer" typically contains information about the author of the section, copyright data or links to related documents.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;&lt;/&gt;</code></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>
