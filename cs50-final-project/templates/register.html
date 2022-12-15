@@ -6,9 +6,10 @@
 
 {% block main %}
     <form action="/register" method="post">
-        <input name="username" placeholder="Username" type="text">
-        <input name="password" placeholder="Password" type="password">
-        <input name="confirmation" placeholder="Password (again)" type="password">
-        <button type="submit">Register</button> 
+        {{ form.hidden_tag() }}
+        {{ form.username }}
+        {{ form.password }}
+        {{ form.password_confirm }}
+        {{ form.submit }}
     </form>
 {% endblock %}
