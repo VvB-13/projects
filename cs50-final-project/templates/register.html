@@ -6,10 +6,20 @@
 
 {% block main %}
     <form action="/register" method="post">
-        {{ form.hidden_tag() }}
-        {{ form.username }}
-        {{ form.password }}
-        {{ form.password_confirm }}
-        {{ form.submit }}
+        <div class="mb-3">
+            {{ form.hidden_tag() }}
+        </div>
+        <div class="mb-3">
+            {{ form.username(class="form-control mx-auto w-auto") }}
+        </div>
+        <div class="mb-3">
+            {{ form.password(class="form-control mx-auto w-auto") }}
+        </div>
+        <div class="mb-3">
+            {{ form.password_confirm(class="form-control mx-auto w-auto") }}
+        </div>
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
     </form>
 {% endblock %}

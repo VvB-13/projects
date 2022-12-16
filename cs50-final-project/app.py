@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, user_logged_in
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo
@@ -30,7 +30,7 @@ class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
         min=3, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(
-        min=3, max=20), EqualTo("password_confirm")], render_kw={"placeholder": "Password"})
+        min=3, max=20), EqualTo("password_confirm"),], render_kw={"placeholder": "Password"})
     password_confirm = PasswordField(validators=[InputRequired(), Length(
         min=3, max=20)], render_kw={"placeholder": "Password (again)"})
     submit = SubmitField("Register")
@@ -38,7 +38,7 @@ class RegisterForm(FlaskForm):
     def validate_username(self, username):
         existing_username = User.query.filter_by(username=username.data).first()
         if existing_username:
-            raise ValidationError("That username already exists. Please choose a different one.")
+            raise ValidationError("Username already exists!")
 
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
@@ -74,6 +74,7 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
+                flash("You were successfully logged in!")
                 return redirect("/")
 
     return render_template("login.html", form=form)
@@ -82,4 +83,5 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash("You were successfully logged out!", "info")
     return redirect("/login")
