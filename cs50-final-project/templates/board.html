@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Board Games
+{% endblock %}
+
+{% block main %}
+    {% if games == 13 %}
+        <form action="/board" method="post">
+            <div class="mb-3">
+                {{ form.hidden_tag() }}
+            </div>
+            <div class="mb-3">
+                {{ form.name(class="form-control mx-auto w-auto") }}
+            </div>
+            <div class="mb-3">
+                {{ form.year(class="form-control mx-auto w-auto") }}
+            </div>
+            <div class="mb-3">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    {% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Min/ Max Players</th>
+                <th>Playtime</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>{{ game.name }}</td>
+                <td>{{ game.year }}</td>
+                <td>{{ game.min_players }} / {{ game.max_players }}</td>
+                <td>{{ game.playtime }}</td>
+                <td>Like Button</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

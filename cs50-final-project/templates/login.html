@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block main %}
+    {% if games %}
+    {% else %}
     <form action="/login" method="post">
         <div class="mb-3">
             {{ form.hidden_tag() }}
@@ -19,4 +21,5 @@
             {{ form.submit(class="btn btn-primary") }}
         </div>
     </form>
+    {% endif %}
 {% endblock %}
