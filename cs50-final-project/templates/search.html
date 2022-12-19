@@ -1,20 +1,17 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Board Games
+    Search
 {% endblock %}
 
 {% block main %}
     {% if boards == 13 %}
-        <form action="/board" method="post">
+        <form action="/search" method="post">
             <div class="mb-3">
                 {{ form.hidden_tag() }}
             </div>
             <div class="mb-3">
-                {{ form.name(class="form-control mx-auto w-auto") }}
-            </div>
-            <div class="mb-3">
-                {{ form.year(class="form-control mx-auto w-auto") }}
+                {{ form.username(class="form-control mx-auto w-auto") }}
             </div>
             <div class="mb-3">
                 {{ form.submit(class="btn btn-primary") }}
@@ -22,6 +19,7 @@
         </form>
     {% else %}
         {% if boards %}
+            <h2>Board Games!</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -29,7 +27,6 @@
                         <th>Year</th>
                         <th>Min/ Max Players</th>
                         <th>Playtime</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,14 +34,8 @@
                         <tr>
                             <td>{{ board.name }}</td>
                             <td>{{ board.year }}</td>
-                            <td>{{ board.min_players }} / {{ board.max_players }}</td>
+                            <td>{{ board.players }}</td>
                             <td>{{ board.playtime }}</td>
-                            <td>
-                                <form action="/board" method="post">
-                                    <input name="id" type="hidden" value="{{ board.id }}">
-                                    <input type="submit" value="Like" class="btn btn-primary">
-                                </form>
-                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -1,16 +1,13 @@
 from flask import Flask, render_template, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
-from wtforms.validators import InputRequired, Length, EqualTo, Optional
 from flask_bcrypt import Bcrypt
 from sqlalchemy.ext.automap import automap_base
+from self_forms import RegisterForm, LoginForm, BoardForm, SearchForm
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SECRET_KEY"] = "secret_key"
 
@@ -31,33 +28,22 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+    share = db.Column(db.Boolean, default=True, unique=False)
 
-class RegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(
-        min=3, max=20)], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[InputRequired(), Length(
-        min=3, max=20), EqualTo("password_confirm"),], render_kw={"placeholder": "Password"})
-    password_confirm = PasswordField(validators=[InputRequired(), Length(
-        min=3, max=20)], render_kw={"placeholder": "Password (again)"})
-    submit = SubmitField("Register")
-
-class LoginForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(
-        min=3, max=20)], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[InputRequired(), Length(
-        min=3, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField("Login")
-
-class BoardForm(FlaskForm):
-    name = StringField(validators=[Optional()], render_kw={"placeholder": "Name"})
-    year = IntegerField(validators=[Optional()], render_kw={"placeholder": "Year"})
-    submit = SubmitField("Search")
-
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 @login_required
 def index():
-    likes = db.session.query(Likes).filter_by(user=current_user.get_id()).all()
-    return render_template("index.html", likes=likes)
+
+    if request.method == "POST":
+        id = request.form.get("id")
+        if id:
+            db.session.query(Likes).filter_by(id=id).delete()
+            db.session.commit()
+            flash("Deletion was successful!")
+            return redirect("/")
+
+    boards = db.session.query(Likes).filter_by(user=current_user.get_id(), what="Board").all()
+    return render_template("index.html", boards=boards)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -81,7 +67,7 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-
+    
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -90,6 +76,12 @@ def login():
                 login_user(user)
                 flash("You were successfully logged in!")
                 return redirect("/")
+            else:
+                flash("Invalid username and/or password!")
+                redirect("/login")
+        else:
+            flash("Invalid username and/or password!")
+            redirect("/login")
 
     return render_template("login.html", form=form)
 
@@ -108,16 +100,22 @@ def board():
     if form.validate_on_submit():
         name = form.name.data
         year = form.year.data
+
         if name and not year:
-            games = db.session.query(Board).filter(Board.name.contains(name)).limit(10)
+            boards = db.session.query(Board).filter(Board.name.contains(name)).limit(10).all()
         elif year and not name:
-            games = db.session.query(Board).filter_by(year=year).limit(10)
+            boards = db.session.query(Board).filter_by(year=year).limit(10).all()
         elif name and year:
-            games = db.session.query(Board).filter(Board.name.contains(name), year == Board.year).limit(10)
+            boards = db.session.query(Board).filter(Board.name.contains(name), year == Board.year).limit(10).all()
         else:
             flash("You need to input at least one field!")
             return redirect("/board")
-        return render_template("board.html", games=games, form=form)
+
+        if boards:
+            return render_template("board.html", boards=boards, form=form)
+        else:
+            flash("No Board Game found for the given search!")
+            return redirect("/board")
 
     if request.method == "POST":
         id = request.form.get("id")
@@ -131,5 +129,44 @@ def board():
             flash("Liking was successful!")
             return redirect("/")
 
-    games = 13
-    return render_template("board.html", form=form, games=games)
+    boards = 13
+    return render_template("board.html", form=form, boards=boards)
+
+@app.route("/search", methods=['GET', 'POST'])
+@login_required
+def search():
+
+    form = SearchForm()
+    if form.validate_on_submit():
+        name = form.username.data
+        user = User.query.filter_by(username=name, share=True).first()
+        if user:
+            boards = db.session.query(Likes).filter_by(user=user.id, what="Board").all()
+            if boards:
+                return render_template("search.html", boards=boards, form=form)
+            else:
+                flash("User doesn't have any favorites yet!")
+                return redirect("/search")
+        else:
+            flash("Username doesn't exist or user doesn't want to share their favorites!")
+            return redirect("/search")
+
+    boards = 13
+    return render_template("search.html", form=form, boards=boards)
+
+@app.route("/setting", methods=["GET", "POST"])
+@login_required
+def setting():
+
+    if request.method == "POST":
+        share = int(request.form.get("share"))
+        User.query.filter_by(id=current_user.get_id()).update({"share": share})
+        db.session.commit()
+        flash("Settings were saved successfully!")
+        return redirect("/setting")
+
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    return render_template("setting.html", user=user)
+
+if __name__ == "__main__":
+    app.run(debug=True)

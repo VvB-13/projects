@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    {% if likes %}
+    {% if boards %}
         <h2>Board Games!</h2>
         <table class="table">
             <thead>
@@ -14,15 +14,22 @@
                     <th>Year</th>
                     <th>Min/ Max Players</th>
                     <th>Playtime</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                {% for like in likes %}
+                {% for board in boards %}
                     <tr>
-                        <td>{{ like.name }}</td>
-                        <td>{{ like.year }}</td>
-                        <td>{{ like.players }}</td>
-                        <td>{{ like.playtime }}</td>
+                        <td>{{ board.name }}</td>
+                        <td>{{ board.year }}</td>
+                        <td>{{ board.players }}</td>
+                        <td>{{ board.playtime }}</td>
+                        <td>
+                            <form action="/" method="post">
+                                <input name="id" type="hidden" value="{{ board.id }}">
+                                <input type="submit" value="Delete" class="btn btn-primary">
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
