@@ -5,5 +5,30 @@
 {% endblock %}
 
 {% block main %}
-    <p>Hello, World!</p>
+    {% if likes %}
+        <h2>Board Games!</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Min/ Max Players</th>
+                    <th>Playtime</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for like in likes %}
+                    <tr>
+                        <td>{{ like.name }}</td>
+                        <td>{{ like.year }}</td>
+                        <td>{{ like.players }}</td>
+                        <td>{{ like.playtime }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>Welcome to My Favorites!</h2>
+        <p>Your Favorites will show up once you start giving out likes!</p>
+    {% endif %}
 {% endblock %}

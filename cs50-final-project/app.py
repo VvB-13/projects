@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -21,6 +21,7 @@ login_manager.login_view = "login"
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 Board = Base.classes.board
+Likes = Base.classes.likes
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -55,7 +56,8 @@ class BoardForm(FlaskForm):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    likes = db.session.query(Likes).filter_by(user=current_user.get_id()).all()
+    return render_template("index.html", likes=likes)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -108,14 +110,26 @@ def board():
         year = form.year.data
         if name and not year:
             games = db.session.query(Board).filter(Board.name.contains(name)).limit(10)
-        if year and not name:
+        elif year and not name:
             games = db.session.query(Board).filter_by(year=year).limit(10)
-        if name and year:
+        elif name and year:
             games = db.session.query(Board).filter(Board.name.contains(name), year == Board.year).limit(10)
-        if not name and not year:
+        else:
             flash("You need to input at least one field!")
             return redirect("/board")
         return render_template("board.html", games=games, form=form)
+
+    if request.method == "POST":
+        id = request.form.get("id")
+        if id:
+            game = db.session.query(Board).filter_by(id=id).first()
+            players = f"{game.min_players} / {game.max_players}"
+            new_entry = Likes(user=current_user.get_id(), name=game.name, year=game.year,
+                             what="Board", playtime=game.playtime, players=players)
+            db.session.add(new_entry)
+            db.session.commit()
+            flash("Liking was successful!")
+            return redirect("/")
 
     games = 13
     return render_template("board.html", form=form, games=games)
