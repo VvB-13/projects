@@ -1,0 +1,25 @@
+
+
+
+
+
+- New Databases (Letterboxd, Games)
+
+
+- Neue Datenbanken
+- Hübsch
+
+
+- Code vereinfachen
+- entschlacken
+
+
+
+
+Games:
+- route
+- html seite
+- search
+- form ?
+- index
+- Layout nav

@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Movies
+{% endblock %}
+
+{% block main %}
+    {% if movies == 13 %}
+        <form action="/movie" method="post">
+            <div class="mb-3">
+                {{ form.hidden_tag() }}
+            </div>
+            <div class="mb-3">
+                {{ form.title(class="form-control mx-auto w-auto") }}
+            </div>
+            <div class="mb-3">
+                {{ form.genre(class="form-control mx-auto w-auto") }}
+            </div>
+            <div class="mb-3">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    {% else %}
+        {% if movies %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Release</th>
+                        <th>Genre</th>
+                        <th>Runtime</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in movies %}
+                        <tr>
+                            <td>{{ movie.title }}</td>
+                            <td>{{ movie.release }}</td>
+                            <td>{{ movie.genre }}</td>
+                            <td>{{ movie.runtime }}</td>
+                            <td>
+                                <form action="/movie" method="post">
+                                    <input name="id" type="hidden" value="{{ movie.id }}">
+                                    <input type="submit" value="Like" class="btn btn-primary">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+{% endblock %}

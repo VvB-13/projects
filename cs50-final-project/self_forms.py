@@ -1,5 +1,5 @@
 from wtforms.validators import InputRequired, Length, EqualTo, Optional
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, RadioField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from flask_wtf import FlaskForm
 
 class RegisterForm(FlaskForm):
@@ -26,4 +26,9 @@ class BoardForm(FlaskForm):
 class SearchForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
         min=3, max=20)], render_kw={"placeholder": "Username"})
+    submit = SubmitField("Search")
+
+class MovieForm(FlaskForm):
+    title = StringField(validators=[Optional()], render_kw={"placeholder": "Title"})
+    genre = StringField(validators=[Optional()], render_kw={"placeholder": "Genre"})
     submit = SubmitField("Search")

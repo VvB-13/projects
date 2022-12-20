@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from sqlalchemy.ext.automap import automap_base
-from self_forms import RegisterForm, LoginForm, BoardForm, SearchForm
+from self_forms import RegisterForm, LoginForm, BoardForm, SearchForm, MovieForm
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -18,7 +18,8 @@ login_manager.login_view = "login"
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 Board = Base.classes.board
-Likes = Base.classes.likes
+Like = Base.classes.like
+Movie = Base.classes.movie
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -37,13 +38,14 @@ def index():
     if request.method == "POST":
         id = request.form.get("id")
         if id:
-            db.session.query(Likes).filter_by(id=id).delete()
+            db.session.query(Like).filter_by(id=id).delete()
             db.session.commit()
             flash("Deletion was successful!")
             return redirect("/")
 
-    boards = db.session.query(Likes).filter_by(user=current_user.get_id(), what="Board").all()
-    return render_template("index.html", boards=boards)
+    boards = db.session.query(Like).filter_by(user=current_user.get_id(), what="Board").all()
+    movies = db.session.query(Like).filter_by(user=current_user.get_id(), what="Movie").all()
+    return render_template("index.html", boards=boards, movies=movies)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -122,7 +124,7 @@ def board():
         if id:
             game = db.session.query(Board).filter_by(id=id).first()
             players = f"{game.min_players} / {game.max_players}"
-            new_entry = Likes(user=current_user.get_id(), name=game.name, year=game.year,
+            new_entry = Like(user=current_user.get_id(), name=game.name, year=game.year,
                              what="Board", playtime=game.playtime, players=players)
             db.session.add(new_entry)
             db.session.commit()
@@ -131,6 +133,45 @@ def board():
 
     boards = 13
     return render_template("board.html", form=form, boards=boards)
+
+@app.route("/movie", methods=['GET', 'POST'])
+@login_required
+def movie():
+
+    form = MovieForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        genre = form.genre.data
+
+        if title and not genre:
+            movies = db.session.query(Movie).filter(Movie.title.contains(title)).limit(10).all()
+        elif genre and not title:
+            movies = db.session.query(Movie).filter(Movie.genre.contains(genre)).limit(10).all()
+        elif title and genre:
+            movies = db.session.query(Movie).filter(Movie.title.contains(title), Movie.genre.contains(genre)).limit(10).all()
+        else:
+            flash("You need to input at least one field!")
+            return redirect("/movie")
+
+        if movies:
+            return render_template("movie.html", movies=movies, form=form)
+        else:
+            flash("No Movie found for the given search!")
+            return redirect("/movie")
+
+    if request.method == "POST":
+        id = request.form.get("id")
+        if id:
+            movie = db.session.query(Movie).filter_by(id=id).first()
+            new_entry = Like(user=current_user.get_id(), name=movie.title, year=movie.release,
+                             what="Movie", playtime=movie.runtime, genre=movie.genre)
+            db.session.add(new_entry)
+            db.session.commit()
+            flash("Liking was successful!")
+            return redirect("/")
+
+    movies = 13
+    return render_template("movie.html", form=form, movies=movies)
 
 @app.route("/search", methods=['GET', 'POST'])
 @login_required
@@ -141,9 +182,10 @@ def search():
         name = form.username.data
         user = User.query.filter_by(username=name, share=True).first()
         if user:
-            boards = db.session.query(Likes).filter_by(user=user.id, what="Board").all()
-            if boards:
-                return render_template("search.html", boards=boards, form=form)
+            boards = db.session.query(Like).filter_by(user=user.id, what="Board").all()
+            movies = db.session.query(Like).filter_by(user=user.id, what="Movie").all()
+            if boards or movies:
+                return render_template("search.html", boards=boards, form=form, username=name, movies=movies)
             else:
                 flash("User doesn't have any favorites yet!")
                 return redirect("/search")

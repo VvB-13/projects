@@ -18,8 +18,12 @@
             </div>
         </form>
     {% else %}
+    <div class="mb-3">
+        <h2>Favorites of {{ username }}!</h2>
+    </div>
         {% if boards %}
-            <h2>Board Games!</h2>
+        <div class="mb-3">
+            <h4>Board Games</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -40,6 +44,32 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+        {% endif %}
+        {% if movies %}
+        <div class="mb-3">
+            <h4>Movies</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Release</th>
+                        <th>Genre</th>
+                        <th>Runtime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in movies %}
+                        <tr>
+                            <td>{{ movie.name }}</td>
+                            <td>{{ movie.year }}</td>
+                            <td>{{ movie.genre }}</td>
+                            <td>{{ movie.playtime }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% endif %}
     {% endif %}
 {% endblock %}

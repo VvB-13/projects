@@ -34,6 +34,35 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% elif movies %}
+        <h2>Movies!</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Release</th>
+                    <th>Genre</th>
+                    <th>Runtime</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for movie in movies %}
+                    <tr>
+                        <td>{{ movie.name }}</td>
+                        <td>{{ movie.year }}</td>
+                        <td>{{ movie.genre }}</td>
+                        <td>{{ movie.playtime }}</td>
+                        <td>
+                            <form action="/" method="post">
+                                <input name="id" type="hidden" value="{{ movie.id }}">
+                                <input type="submit" value="Delete" class="btn btn-primary">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
         <h2>Welcome to My Favorites!</h2>
         <p>Your Favorites will show up once you start giving out likes!</p>

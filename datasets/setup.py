@@ -4,38 +4,32 @@ from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-class Likes(Base):
-    __tablename__ = "likes"
+class Like(Base):
+    __tablename__ = "like"
 
     id = Column("id", Integer, primary_key=True)
     user = Column("user", Integer)
     name = Column("name", String)
-    year = Column("year", Integer)
+    year = Column("year", String)
     what = Column("what", String)
     players = Column("players", String)
-    playtime = Column("playtime", Integer)
+    time = Column("playtime", Integer)
+    genre = Column("genre", String)
+    developer = Column("developer", String)
 
-    def __init__(self, user, name, year, what, players, playtime):
+    def __init__(self, user, name, year, what, players, playtime, genre, developer):
         self.user = user
         self.name = name
         self.year = year
         self.what = what
         self.players = players
         self.playtime = playtime
+        self.genre = genre
+        self.developer = developer
+
 
 engine = create_engine("sqlite:///database.db", echo=True)
 Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
-
-# delete_user = session.query(Board).all()
-# for user in delete_user:
-#     session.delete(user)
-# session.commit()
-
-# for i in range(len(body)):
-#     test = Board(name=body[i][0], year=body[i][1], min_players=body[i][2],
-#             max_players=body[i][3], playtime=body[i][4])
-#     session.add(test)
-# session.commit()
