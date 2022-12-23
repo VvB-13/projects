@@ -5,21 +5,13 @@
 {% endblock %}
 
 {% block main %}
-    {% if games %}
-    {% else %}
+    <!--LoginForm-->
     <form action="/login" method="post">
         <div class="mb-3">
             {{ form.hidden_tag() }}
         </div>
         <div class="mb-3">
             {{ form.username(class="form-control mx-auto w-auto") }}
-            {% if form.username.errors %}
-                <ul class="errors">
-                    {% for error in form.username.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
         </div>
         <div class="mb-3">
             {{ form.password(class="form-control mx-auto w-auto") }}
@@ -28,5 +20,4 @@
             {{ form.submit(class="btn btn-primary") }}
         </div>
     </form>
-    {% endif %}
 {% endblock %}

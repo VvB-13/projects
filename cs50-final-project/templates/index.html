@@ -5,64 +5,105 @@
 {% endblock %}
 
 {% block main %}
-    {% if boards %}
-        <h2>Board Games!</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Year</th>
-                    <th>Min/ Max Players</th>
-                    <th>Playtime</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for board in boards %}
+    <!--If any likes yet-->
+    {% if boards or movies or games %}
+        <!--boards-->
+        {% if boards %}
+            <h3>Board Games!</h3>
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ board.name }}</td>
-                        <td>{{ board.year }}</td>
-                        <td>{{ board.players }}</td>
-                        <td>{{ board.playtime }}</td>
-                        <td>
-                            <form action="/" method="post">
-                                <input name="id" type="hidden" value="{{ board.id }}">
-                                <input type="submit" value="Delete" class="btn btn-primary">
-                            </form>
-                        </td>
+                        <th>Name</th>
+                        <th>Year</th>
+                        <th>Min/ Max Players</th>
+                        <th>Playtime</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% elif movies %}
-        <h2>Movies!</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Release</th>
-                    <th>Genre</th>
-                    <th>Runtime</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for movie in movies %}
+                </thead>
+                <tbody>
+                    {% for board in boards %}
+                        <tr>
+                            <td>{{ board.name }}</td>
+                            <td>{{ board.year }}</td>
+                            <td>{{ board.players }}</td>
+                            <td>{{ board.playtime }}</td>
+                            <td>
+                                <form action="/" method="post">
+                                    <input name="id" type="hidden" value="{{ board.id }}">
+                                    <input type="submit" value="Delete" class="btn btn-primary">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </br>
+        {% endif %}
+        <!--movies-->
+        {% if movies %}
+            <h3>Movies!</h3>
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ movie.name }}</td>
-                        <td>{{ movie.year }}</td>
-                        <td>{{ movie.genre }}</td>
-                        <td>{{ movie.playtime }}</td>
-                        <td>
-                            <form action="/" method="post">
-                                <input name="id" type="hidden" value="{{ movie.id }}">
-                                <input type="submit" value="Delete" class="btn btn-primary">
-                            </form>
-                        </td>
+                        <th>Title</th>
+                        <th>Release</th>
+                        <th>Genre</th>
+                        <th>Runtime</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for movie in movies %}
+                        <tr>
+                            <td>{{ movie.name }}</td>
+                            <td>{{ movie.year }}</td>
+                            <td>{{ movie.genre }}</td>
+                            <td>{{ movie.playtime }}</td>
+                            <td>
+                                <form action="/" method="post">
+                                    <input name="id" type="hidden" value="{{ movie.id }}">
+                                    <input type="submit" value="Delete" class="btn btn-primary">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </br>
+        {% endif %}
+        <!--games-->
+        {% if games %}
+            <h3>Computer Games!</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Release</th>
+                        <th>Genre</th>
+                        <th>Developer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in games %}
+                        <tr>
+                            <td>{{ game.name }}</td>
+                            <td>{{ game.year }}</td>
+                            <td>{{ game.genre }}</td>
+                            <td>{{ game.developer }}</td>
+                            <td>
+                                <form action="/" method="post">
+                                    <input name="id" type="hidden" value="{{ game.id }}">
+                                    <input type="submit" value="Delete" class="btn btn-primary">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </br>
+        {% endif %}
+    <!--If no likes yet-->
     {% else %}
         <h2>Welcome to My Favorites!</h2>
         <p>Your Favorites will show up once you start giving out likes!</p>

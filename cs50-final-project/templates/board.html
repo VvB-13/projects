@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+    <!-- BoardForm if no search yet-->
     {% if boards == 13 %}
         <form action="/board" method="post">
             <div class="mb-3">
@@ -21,8 +22,9 @@
             </div>
         </form>
     {% else %}
+        <!-- After searching the same page displays the result-->
         {% if boards %}
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -39,6 +41,7 @@
                             <td>{{ board.year }}</td>
                             <td>{{ board.min_players }} / {{ board.max_players }}</td>
                             <td>{{ board.playtime }}</td>
+                            <!-- Like button for each board game -->
                             <td>
                                 <form action="/board" method="post">
                                     <input name="id" type="hidden" value="{{ board.id }}">

@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Games
+{% endblock %}
+
+{% block main %}
+    <!-- Form if not searched yet -->
+    {% if games == 13 %}
+        <form action="/game" method="post">
+            <div class="mb-3">
+                {{ form.hidden_tag() }}
+            </div>
+            <div class="mb-3">
+                {{ form.title(class="form-control mx-auto w-auto") }}
+            </div>
+            <div class="mb-3">
+                {{ form.genre(class="form-control mx-auto w-auto") }}
+            </div>
+            <div class="mb-3">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    {% else %}
+        <!-- search results -->
+        {% if games %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Release</th>
+                        <th>Genre</th>
+                        <th>Developer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in games %}
+                        <tr>
+                            <td>{{ game.title }}</td>
+                            <td>{{ game.release }}</td>
+                            <td>{{ game.genre }}</td>
+                            <td>{{ game.runtime }}</td>
+                            <!-- Like button -->
+                            <td>
+                                <form action="/game" method="post">
+                                    <input name="id" type="hidden" value="{{ game.id }}">
+                                    <input type="submit" value="Like" class="btn btn-primary">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+{% endblock %}

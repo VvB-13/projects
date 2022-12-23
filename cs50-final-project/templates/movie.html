@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+    <!--No search yet-->
     {% if movies == 13 %}
         <form action="/movie" method="post">
             <div class="mb-3">
@@ -21,8 +22,9 @@
             </div>
         </form>
     {% else %}
+    <!--Displaying search results-->
         {% if movies %}
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -39,6 +41,7 @@
                             <td>{{ movie.release }}</td>
                             <td>{{ movie.genre }}</td>
                             <td>{{ movie.runtime }}</td>
+                            <!--Like button-->
                             <td>
                                 <form action="/movie" method="post">
                                     <input name="id" type="hidden" value="{{ movie.id }}">
